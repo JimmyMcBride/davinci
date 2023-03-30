@@ -6,12 +6,32 @@ body {
     @apply bg-gray-50;
 }
 
+.router-link-exact-active {
+    @apply text-violet-800;
+}
+
 @layer components {
     .btn {
-        @apply bg-[#12b488] text-white px-3 py-2 rounded-md text-sm text-white;
+        @apply bg-violet-500 text-white px-3 py-2 rounded-md text-sm text-white;
+    }
+
+    .green-btn {
+        @apply bg-green-600 text-white px-3 py-2 rounded-md text-sm text-white;
+    }
+
+    .blue-btn {
+        @apply bg-blue-600 text-white px-3 py-2 rounded-md text-sm text-white;
     }
 
     .card {
         @apply p-3 rounded-md bg-white shadow-md h-full;
+    }
+
+    .input {
+        @apply w-full rounded border border-gray-800 bg-transparent py-1 px-3 leading-8 outline-none transition-colors duration-200 ease-in-out placeholder:text-gray-500 focus:border-blue-500 focus:bg-transparent focus:ring-2 focus:ring-transparent;
+    }
+
+    .rounded-outline {
+        @apply rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none;
     }
 }

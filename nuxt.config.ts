@@ -1,13 +1,16 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ["@nuxtjs/tailwindcss"],
+  modules: ["@nuxtjs/tailwindcss", "nuxt-headlessui"],
+  headlessui: {
+    prefix: "Headless",
+  },
   app: {
     head: {
       title: "DaVinci",
       meta: [
         {
           name: "description",
-          content: "OpenAI's GPT-3 powered project management tool",
+          content: "OpenAI's GPT-4 powered project management tool",
         },
       ],
       link: [
@@ -17,8 +20,5 @@ export default defineNuxtConfig({
         },
       ],
     },
-  },
-  runtimeConfig: {
-    currencyKey: process.env.CURRENCY_API_KEY,
   },
 })

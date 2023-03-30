@@ -1,29 +1,31 @@
 <template>
-  <header class="shadow-sm bg-white">
-    <nav class="container mx-auto p-4 flex justify-between">
-      <NuxtLink class="font-bold" to="/">DaVinci</NuxtLink>
-      <ul class="flex gap-4">
-        <li>
-          <NuxtLink to="/">Home</NuxtLink>
-        </li>
-        <li>
-          <NuxtLink to="/about">About</NuxtLink>
-        </li>
-      </ul>
+  <header class="relative shadow-sm bg-white w-full">
+    <nav class="relative container mx-auto p-4 flex justify-between items-center h-16">
+      <NuxtLink class="font-bold flex items-center" to="/">DaVinci</NuxtLink>
+      <NavAuthenticationComponent :open-modal="openModal" />
     </nav>
   </header>
-  <div class="container mx-auto">
+  <AuthModal :close-modal="closeModal" :is-open="isOpen" />
+  <div class="container mx-auto pt-4">
     <slot />
   </div>
 </template>
 
 <script lang="ts" setup>
-const router = useRoute()
-console.log(`route = ${router.path}`)
+import { useModal } from "@/composables/useModal"
+import { useUserInvoice } from "~/composables/useUserInvoice"
+import { getCurrentUser } from "~/helpers/firestoreUtils"
+
+const { isOpen, closeModal, openModal } = useModal("authModal")
+const { getUpcomingInvoice } = useUserInvoice()
+const { isUserSignedIn } = useAuthState()
+
+watchEffect(async () => {
+  if (isUserSignedIn.value) {
+    const currentUser = await getCurrentUser()
+    if (currentUser?.customer) await getUpcomingInvoice(currentUser)
+  }
+})
 </script>
 
-<style scoped>
-.router-link-exact-active {
-  color: #12b488;
-}
-</style>
+<style scoped></style>
