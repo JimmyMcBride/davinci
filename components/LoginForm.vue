@@ -59,8 +59,10 @@ const googleRegistration = async () => {
   try {
     await googleSignIn()
     closeModal()
+    window.location.reload()
   } catch (error) {
     console.error(error)
+    window.location.reload()
   }
 }
 
@@ -71,6 +73,7 @@ const formData = reactive({
 
 const submitForm = async () => {
   await emailSignIn(formData.email, formData.password)
+  window.location.reload()
 }
 </script>
 

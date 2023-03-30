@@ -7,7 +7,7 @@
       <p>Promote the product here!</p>
     </div>
     <div v-else>
-      <div v-if="currentUser?.trelloToken && currentUser?.customer">
+      <div v-if="currentUser?.trelloToken && currentUser?.customer" class="flex justify-center">
         <GenerateProjectBoard />
         <ProjectBoardDisplay />
       </div>
@@ -39,6 +39,9 @@ watchEffect(async () => {
   if (isUserSignedIn.value) {
     loading.value = true
     currentUser.value = await getCurrentUser()
+    loading.value = false
+  } else {
+    currentUser.value = null
     loading.value = false
   }
 })

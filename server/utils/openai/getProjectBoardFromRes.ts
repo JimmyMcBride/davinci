@@ -12,7 +12,7 @@ export const getProjectBoardFromRes = async (
   let projectBoardData: ProjectBoard
   if (data != undefined && tokens != undefined) {
     projectBoardData = JSON.parse(data)
-    const openAiRes = await stripe.subscriptionItems.createUsageRecord(itemId, {
+    await stripe.subscriptionItems.createUsageRecord(itemId, {
       quantity: tokens,
       timestamp: Math.floor(Date.now() / 1000),
       action: "increment",

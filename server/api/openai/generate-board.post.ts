@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event)
     const projectDescription = body.projectDescription
-    const itemId = body.projectDescription
+    const itemId = body.itemId
     console.log("projectDescription", projectDescription)
     console.log("itemId", itemId)
     // if (!projectDescription.isEmpty) {

@@ -122,8 +122,10 @@ const googleRegistration = async () => {
   try {
     await googleSignIn()
     closeModal()
+    window.location.reload()
   } catch (error) {
     console.error(error)
+    window.location.reload()
   }
 }
 
@@ -152,10 +154,11 @@ const rules = computed(() => {
 
 const v$ = useVuelidate(rules, formData)
 
-const submitForm = () => {
-  v$.value.$validate()
+const submitForm = async () => {
+  await v$.value.$validate()
   if (!v$.value.$error) {
-    emailRegistration(formData.email, formData.password)
+    await emailRegistration(formData.email, formData.password)
+    window.location.reload()
   }
 }
 </script>
