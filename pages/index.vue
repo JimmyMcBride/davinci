@@ -7,7 +7,7 @@
       <p>Promote the product here!</p>
     </div>
     <div v-else>
-      <div v-if="currentUser?.trelloToken && currentUser?.customer" class="flex justify-center">
+      <div v-if="currentUser?.trelloToken && currentUser?.customer" class="flex flex-col items-center">
         <GenerateProjectBoard />
         <ProjectBoardDisplay />
       </div>
