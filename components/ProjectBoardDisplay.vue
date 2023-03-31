@@ -55,8 +55,6 @@ const trelloSuccess = useState<boolean | null>("trelloSuccess", () => null)
 const { currentUser } = useCurrentUser()
 
 async function uploadBoardToTrello() {
-  if (!currentUser.value?.trelloToken) return
-  if (!projectBoard.value) return
   trelloLoading.value = true
   try {
     await useFetch("/api/trello/create-board", {

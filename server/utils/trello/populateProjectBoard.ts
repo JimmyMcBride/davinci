@@ -1,5 +1,4 @@
 import { trelloWithAuth } from "~/server/utils/trello/index"
-import { CreateBoardResponse, ProjectBoard } from "~/typings"
 
 export default async function populateProjectBoard(projectBoard: ProjectBoard, trelloToken: string) {
   const trelloAuth = trelloWithAuth(trelloToken)

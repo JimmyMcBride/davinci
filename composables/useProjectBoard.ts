@@ -15,6 +15,7 @@ export const useProjectBoard = () => {
           itemId: currentUser.value?.itemId,
         }),
       })
+      console.log(data.value)
       projectBoardLoading.value = false
       projectBoard.value = data.value
     } catch (error) {

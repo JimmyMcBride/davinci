@@ -1,11 +1,11 @@
 import populateProjectBoard from "~/server/utils/trello/populateProjectBoard"
 import { decodeString } from "~/server/utils/encryption"
-import { ProjectBoard } from "~/typings"
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const projectBoard: ProjectBoard = body.boardData
-  const token = decodeString(body.trelloToken).token
+  const token = decodeString(body.trelloToken).toString()
+  console.log("decoded token: ", token)
   try {
     await populateProjectBoard(projectBoard, token)
     event.node.res.statusCode = 200
