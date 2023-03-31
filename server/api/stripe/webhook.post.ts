@@ -74,6 +74,14 @@ export default defineEventHandler(async (event) => {
         { merge: true }
       )
       break
+    case "customer.subscription.deleted":
+      await firestore.collection("users").doc(userId).set(
+        {
+          status: "canceled",
+        },
+        { merge: true }
+      )
+      break
     default:
     // Unhandled event type
   }
