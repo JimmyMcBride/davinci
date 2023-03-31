@@ -1,19 +1,17 @@
-import { User } from "@firebase/auth"
-
 type TrelloReqBody = {
   boardData: ProjectBoard
   trelloToken: string
 }
 
-interface CurrentUser extends Record<any, any> {
-  id: string
-  username: string
-  email: string
-  name: string
-  avatar: string
-  created: string
-  updated: string
-}
+// interface CurrentUser extends Record<any, any> {
+//   id: string
+//   username: string
+//   email: string
+//   name: string
+//   avatar: string
+//   created: string
+//   updated: string
+// }
 
 interface ProjectBoard {
   projectName: string
@@ -34,8 +32,8 @@ interface CreateBoardResponse {
 }
 
 interface AuthState {
-  user: User | null
-  loading: boolean
+  currentUser: CurrentUser | null
+  isAuthLoading: boolean
   isUserSignedIn: boolean
 }
 
@@ -48,4 +46,5 @@ interface CurrentUser {
   itemId: string | null
   sessionId: string | null
   customer: string | null
+  status: string | null
 }

@@ -36,7 +36,6 @@ export const useFirebase = () => {
   }
 
   return {
-    firebaseApp,
     auth,
     firestore,
     googleSignIn,

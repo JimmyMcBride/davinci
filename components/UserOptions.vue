@@ -29,16 +29,19 @@
 
 <script lang="ts" setup>
 import { Menu, MenuButton, MenuItems } from "@headlessui/vue"
-import { getCurrentUser } from "~/helpers/firestoreUtils"
 
-const currentUser = await getCurrentUser()
+const { currentUser } = useCurrentUser()
 
-const userImage = useState("userImage", () => roboHash(currentUser?.uid))
+const userImage = useState("userImage", () => photoUrl(currentUser.value))
 
-function roboHash(value: string | undefined) {
-  if (!value) {
-    return "https://robohash.org/default?set=set3"
+watchEffect(() => {
+  userImage.value = photoUrl(currentUser.value)
+})
+
+function photoUrl(currentUser: CurrentUser | null) {
+  if (!currentUser?.photoURL) {
+    return `https://robohash.org/${currentUser?.uid}?set=set3`
   }
-  return `https://robohash.org/${value}?set=set3`
+  return currentUser.photoURL
 }
 </script>

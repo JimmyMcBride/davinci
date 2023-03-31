@@ -13,17 +13,14 @@
 
 <script lang="ts" setup>
 import { useModal } from "@/composables/useModal"
-import { useUserInvoice } from "~/composables/useUserInvoice"
-import { getCurrentUser } from "~/helpers/firestoreUtils"
 
 const { isOpen, closeModal, openModal } = useModal("authModal")
 const { getUpcomingInvoice } = useUserInvoice()
-const { isUserSignedIn } = useAuthState()
+const { currentUser, isUserSignedIn } = useCurrentUser()
 
 watchEffect(async () => {
   if (isUserSignedIn.value) {
-    const currentUser = await getCurrentUser()
-    if (currentUser?.customer) await getUpcomingInvoice(currentUser)
+    if (currentUser.value?.customer) await getUpcomingInvoice(currentUser.value)
   }
 })
 </script>

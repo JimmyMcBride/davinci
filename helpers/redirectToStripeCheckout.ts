@@ -1,7 +1,7 @@
 export const redirectToStripeCheckout = async () => {
-  const { user } = useAuthState()
+  const { currentUser } = useCurrentUser()
   try {
-    const userId = user.value?.uid
+    const userId = currentUser.value?.uid
     const { data } = await useFetch("/api/stripe/checkout", {
       method: "POST",
       body: JSON.stringify({

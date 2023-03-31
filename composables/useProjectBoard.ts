@@ -1,20 +1,18 @@
-import { ProjectBoard } from "~/typings"
-import { getCurrentUser } from "~/helpers/firestoreUtils"
-
 export const useProjectBoard = () => {
+  const { currentUser } = useCurrentUser()
+
   const projectBoard = useState<ProjectBoard | null>("projectBoard", () => null)
   const projectBoardLoading = useState<boolean>("projectBoardLoading", () => false)
   const projectBoardError = useState<Error | null>("projectBoardError", () => null)
 
   async function generateProjectBoard(projectDescription: string) {
-    const currentUser = await getCurrentUser()
     projectBoardLoading.value = true
     try {
       const { data } = await useFetch("/api/openai/generate-board", {
         method: "POST",
         body: JSON.stringify({
           projectDescription: projectDescription,
-          itemId: currentUser?.itemId,
+          itemId: currentUser.value?.itemId,
         }),
       })
       projectBoardLoading.value = false
@@ -27,7 +25,6 @@ export const useProjectBoard = () => {
   }
 
   async function refineProjectBoard(refinement: string) {
-    const currentUser = await getCurrentUser()
     projectBoardLoading.value = true
     const oldProjectBoard = projectBoard.value
     projectBoard.value = null
@@ -37,7 +34,7 @@ export const useProjectBoard = () => {
         body: JSON.stringify({
           oldProjectBoard,
           refinementSpec: refinement,
-          itemId: currentUser?.itemId,
+          itemId: currentUser.value?.itemId,
         }),
       })
       projectBoardLoading.value = false

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading">
+  <div v-if="isAuthLoading">
     <ArrowPathIcon class="animate-spin h-6 w-6 text-violet-500" />
   </div>
   <button v-else-if="!isUserSignedIn" class="btn" @click="openModal">Login/Sign Up</button>
@@ -16,5 +16,5 @@ const { openModal } = defineProps({
   },
 })
 
-const { isUserSignedIn, loading } = useAuthState()
+const { isUserSignedIn, isAuthLoading } = useCurrentUser()
 </script>

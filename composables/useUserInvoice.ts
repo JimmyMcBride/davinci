@@ -1,5 +1,4 @@
 import { Stripe } from "stripe"
-import { CurrentUser } from "~/typings"
 
 export const useUserInvoice = () => {
   const userInvoiceData = useState<Stripe.Response<Stripe.UpcomingInvoice> | null>("userInvoiceData", () => null)

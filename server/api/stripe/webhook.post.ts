@@ -37,29 +37,28 @@ export default defineEventHandler(async (event) => {
     data = body.data
     eventType = body.type
   }
+  const customerId = data.object.customer
+  const subscriptionId = data.object.subscription
+  const customerEmail = data.object.customer_details.email
+  console.log(`🔔 Customer details: ${JSON.stringify(data.object.customer_details)}`)
+  const userSnapshot = await firestore.collection("users").where("email", "==", customerEmail.toLowerCase()).get()
+  const userDoc = userSnapshot.docs[0]
+  const userId = userDoc.id
   console.log(`🔔 Event type: ${eventType}`)
   switch (eventType) {
     case "checkout.session.completed":
       console.log(data)
-      const customerId = data.object.customer
-      const subscriptionId = data.object.subscription
-      const customerEmail = data.object.customer_details.email
-
       console.log(`💰 Customer ${customerId} subscribed to plan ${subscriptionId}`)
 
       const subscription = await stripe.subscriptions.retrieve(subscriptionId)
       const itemId = subscription.items.data[0].id
-      console.log("****customerEmail: " + customerEmail)
-      const userSnapshot = await firestore.collection("users").where("email", "==", customerEmail.toLowerCase()).get()
-      const userDoc = userSnapshot.docs[0]
-      console.log("****user data: " + userDoc.data())
-      const userId = userDoc.id
-      console.log("****userId: " + userId)
+
       await firestore.collection("users").doc(userId).set(
         {
           itemId,
           customer: customerId,
           subscriptionId,
+          status: "active",
         },
         { merge: true }
       )
@@ -68,6 +67,12 @@ export default defineEventHandler(async (event) => {
     case "invoice.paid":
       break
     case "invoice.payment_failed":
+      await firestore.collection("users").doc(userId).set(
+        {
+          status: "delinquent",
+        },
+        { merge: true }
+      )
       break
     default:
     // Unhandled event type

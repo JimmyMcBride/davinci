@@ -1,5 +1,5 @@
 import { firestore } from "~/server/utils/firebase"
-import { encodeString } from "~/helpers/encryption"
+import { encodeString } from "~/server/utils/encryption"
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)

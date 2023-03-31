@@ -14,23 +14,7 @@
 
 <script lang="ts" setup>
 import { MenuItem } from "@headlessui/vue"
-import { getCurrentUser } from "~/helpers/firestoreUtils"
+import { redirectToStripePortal } from "~/helpers/redirectToStripePortal"
 
-const redirectToStripePortal = async () => {
-  try {
-    const currentUser = await getCurrentUser()
-    const { data } = await useFetch("/api/stripe/portal-session", {
-      method: "POST",
-      body: JSON.stringify({
-        baseUrl: window.location.origin,
-        customer: currentUser?.customer,
-      }),
-    })
-    navigateTo(data.value?.redirectUrl, {
-      external: true,
-    })
-  } catch (error) {
-    console.error(error)
-  }
-}
+const { currentUser } = useCurrentUser()
 </script>

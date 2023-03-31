@@ -101,7 +101,6 @@
 import { email, helpers, minLength, required, sameAs } from "@vuelidate/validators"
 import { CheckCircleIcon, ExclamationTriangleIcon } from "@heroicons/vue/24/solid"
 import useVuelidate from "@vuelidate/core"
-import { useFirebase } from "~/composables/useFirebase"
 import { createUserWithEmailAndPassword } from "@firebase/auth"
 import { addUserDataIfNotExists } from "~/helpers/firestoreUtils"
 
@@ -122,10 +121,8 @@ const googleRegistration = async () => {
   try {
     await googleSignIn()
     closeModal()
-    window.location.reload()
   } catch (error) {
     console.error(error)
-    window.location.reload()
   }
 }
 
@@ -158,7 +155,6 @@ const submitForm = async () => {
   await v$.value.$validate()
   if (!v$.value.$error) {
     await emailRegistration(formData.email, formData.password)
-    window.location.reload()
   }
 }
 </script>

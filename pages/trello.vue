@@ -3,13 +3,13 @@
 </template>
 
 <script lang="ts" setup>
-if (process.client) {
-  const { user } = useAuthState()
+const { currentUser } = useCurrentUser()
 
+if (process.client) {
   const hash = window.location.hash
   const tokenMatch = hash.match(/#token=(.*)/)
   watchEffect(async () => {
-    const userId = user.value?.uid
+    const userId = currentUser.value?.uid
     const token = tokenMatch && tokenMatch[1]
     if (userId !== undefined && token) {
       try {

@@ -1,5 +1,5 @@
 import populateProjectBoard from "~/server/utils/trello/populateProjectBoard"
-import { decodeString } from "~/helpers/encryption"
+import { decodeString } from "~/server/utils/encryption"
 import { ProjectBoard } from "~/typings"
 
 export default defineEventHandler(async (event) => {

@@ -14,10 +14,10 @@
           <ArrowPathIcon class="animate-spin h-4 w-4 text-violet-500" />
         </div>
         <div v-else-if="trelloSuccess === null">Upload To Trello</div>
-        <div v-else-if="trelloSuccess === true">
+        <div v-else-if="trelloSuccess">
           <CheckCircleIcon class="h-4 w-4 text-green-100" />
         </div>
-        <div v-else-if="trelloSuccess === false">
+        <div v-else-if="!trelloSuccess">
           <XCircleIcon class="h-4 w-4 text-red-500" />
         </div>
       </button>
@@ -45,7 +45,6 @@
 <script lang="ts" setup>
 import { useProjectBoard } from "~/composables/useProjectBoard"
 import { ArrowPathIcon, CheckCircleIcon, XCircleIcon } from "@heroicons/vue/24/solid"
-import { getCurrentUser } from "~/helpers/firestoreUtils"
 
 const { projectBoard, projectBoardLoading, projectBoardError } = useProjectBoard()
 const { openModal } = useModal("refineProjectBoardModal")
@@ -53,15 +52,18 @@ const { openModal } = useModal("refineProjectBoardModal")
 const trelloLoading = useState("trelloLoading", () => false)
 const trelloSuccess = useState<boolean | null>("trelloSuccess", () => null)
 
+const { currentUser } = useCurrentUser()
+
 async function uploadBoardToTrello() {
+  if (!currentUser.value?.trelloToken) return
+  if (!projectBoard.value) return
   trelloLoading.value = true
   try {
-    const currentUser = await getCurrentUser()
     await useFetch("/api/trello/create-board", {
       method: "POST",
       body: JSON.stringify({
-        boardData: projectBoard?.value,
-        trelloToken: currentUser?.trelloToken,
+        boardData: projectBoard.value,
+        trelloToken: currentUser.value?.trelloToken,
       }),
     })
     trelloSuccess.value = true
