@@ -12,7 +12,7 @@
           currentUser?.trelloToken &&
           currentUser?.customer &&
           currentUser?.status !== 'delinquent' &&
-          currentUser?.status !== 'cancelled'
+          currentUser?.status !== 'canceled'
         "
         class="flex flex-col items-center"
       >
