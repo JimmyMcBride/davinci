@@ -25,7 +25,7 @@
       </div>
       <div v-else-if="currentUser?.status === 'canceled'" class="flex flex-col items-center">
         <div class="text-2xl font-bold">Your subscription has been cancelled!</div>
-        <button class="btn" @click="redirectToStripeCheckout">Get your subscription going again!</button>
+        <button class="btn" @click="redirectToStripePortal">Get your subscription going again!</button>
       </div>
       <div v-else class="flex flex-col items-center gap-4">
         <div class="text-2xl font-bold">Almost there!</div>
@@ -43,6 +43,7 @@
 <script lang="ts" setup>
 import { redirectToConnectTrello } from "~/helpers/redirectToConnectTrello"
 import { redirectToStripeCheckout } from "~/helpers/redirectToStripeCheckout"
+import { redirectToStripePortal } from "~/helpers/redirectToStripePortal"
 import { ArrowPathIcon } from "@heroicons/vue/24/solid"
 
 const { isUserSignedIn, currentUser, isAuthLoading } = useCurrentUser()

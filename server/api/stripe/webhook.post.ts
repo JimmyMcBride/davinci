@@ -1,12 +1,9 @@
-// import { firestore } from "~/server/utils/firebase"
-// import { stripe } from "~/server/utils/stripe"
-
 export default defineEventHandler(async (event) => {
   console.log("Webhook received!")
   const body = await readBody(event)
   // console.dir(body)
   const webhookSecret = process.env.STIPE_WEBHOOK_SECRET
-  let data
+  let data: any
   let eventType
   const rawBody = await readRawBody(event)
   if (!rawBody) {
@@ -37,21 +34,32 @@ export default defineEventHandler(async (event) => {
     data = body.data
     eventType = body.type
   }
-  const customerId = data.object.customer
-  const subscriptionId = data.object.subscription
-  const customerEmail = data.object.customer_details.email
-  console.log(`🔔 Customer details: ${JSON.stringify(data.object.customer_details)}`)
-  const userSnapshot = await firestore.collection("users").where("email", "==", customerEmail.toLowerCase()).get()
-  const userDoc = userSnapshot.docs[0]
-  const userId = userDoc.id
   console.log(`🔔 Event type: ${eventType}`)
+  let customerEmail: any
+  let userSnapshot: FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>
+  let userDoc: FirebaseFirestore.QueryDocumentSnapshot<FirebaseFirestore.DocumentData>
+  let userId: any
+  async function setDetails() {
+    // @ts-ignore
+    customerEmail = data.object.customer_details.email
+    // @ts-ignore
+    console.log(`🔔 Customer details: ${JSON.stringify(data.object.customer_details)}`)
+    userSnapshot = await firestore.collection("users").where("email", "==", customerEmail.toLowerCase()).get()
+    userDoc = userSnapshot.docs[0]
+    userId = userDoc.id
+  }
   switch (eventType) {
     case "checkout.session.completed":
+      const customerId = data.object.customer
+      const subscriptionId = data.object.subscription
+
       console.log(data)
       console.log(`💰 Customer ${customerId} subscribed to plan ${subscriptionId}`)
 
       const subscription = await stripe.subscriptions.retrieve(subscriptionId)
       const itemId = subscription.items.data[0].id
+
+      await setDetails()
 
       await firestore.collection("users").doc(userId).set(
         {
@@ -67,6 +75,9 @@ export default defineEventHandler(async (event) => {
     case "invoice.paid":
       break
     case "invoice.payment_failed":
+      userSnapshot = await firestore.collection("users").where("email", "==", data.object.customer).get()
+      userDoc = userSnapshot.docs[0]
+      userId = userDoc.id
       await firestore.collection("users").doc(userId).set(
         {
           status: "delinquent",
@@ -74,16 +85,31 @@ export default defineEventHandler(async (event) => {
         { merge: true }
       )
       break
-    case "customer.subscription.deleted":
-      await firestore.collection("users").doc(userId).set(
-        {
-          status: "canceled",
-        },
-        { merge: true }
-      )
+    case "customer.subscription.updated":
+      console.log(data.object)
+      userSnapshot = await firestore.collection("users").where("customer", "==", data.object.customer).get()
+      userDoc = userSnapshot.docs[0]
+      userId = userDoc.id
+
+      if (data.object.cancel_at !== null) {
+        await firestore.collection("users").doc(userId).set(
+          {
+            status: "canceled",
+          },
+          { merge: true }
+        )
+      } else {
+        await firestore.collection("users").doc(userId).set(
+          {
+            status: "active",
+          },
+          { merge: true }
+        )
+      }
       break
     default:
     // Unhandled event type
   }
+
   return (event.node.res.statusCode = 200)
 })
