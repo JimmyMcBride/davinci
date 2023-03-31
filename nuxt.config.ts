@@ -14,6 +14,7 @@ export default defineNuxtConfig({
         },
       ],
       link: [
+        { rel: "icon", type: "image/png", href: "/favicon-16x16.png" },
         {
           rel: "stylesheet",
           href: "https://fonts.googleapis.com/icon?family=Material+Icons",
