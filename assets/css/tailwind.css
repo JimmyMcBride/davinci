@@ -12,19 +12,19 @@ body {
 
 @layer components {
     .btn {
-        @apply bg-violet-500 text-white px-3 py-2 rounded-md text-sm text-white;
+        @apply bg-violet-500 text-white px-3 py-2 rounded-md text-sm;
     }
 
     .green-btn {
-        @apply bg-green-600 text-white px-3 py-2 rounded-md text-sm text-white;
+        @apply bg-green-600 text-white px-3 py-2 rounded-md text-sm;
     }
 
     .blue-btn {
-        @apply bg-blue-600 text-white px-3 py-2 rounded-md text-sm text-white;
+        @apply bg-blue-600 text-white px-3 py-2 rounded-md text-sm;
     }
 
     .card {
-        @apply p-3 rounded-md bg-white shadow-md h-full;
+        @apply p-3 rounded-md bg-white shadow-md h-auto;
     }
 
     .input {
@@ -33,5 +33,17 @@ body {
 
     .rounded-outline {
         @apply rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none;
+    }
+
+    .head-1 {
+        @apply text-3xl font-bold
+    }
+
+    .head-2 {
+        @apply text-2xl font-bold
+    }
+
+    .head-3 {
+        @apply text-xl font-bold mb-4
     }
 }

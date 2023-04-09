@@ -37,13 +37,11 @@ export const useCurrentUser = () => {
   onMounted(() => {
     const { auth } = useFirebase()
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      // if (auth) {
       authState.value = {
         currentUser: await getCurrentUser(user?.uid),
         isAuthLoading: false,
         isUserSignedIn: !!user,
       }
-      // }
     })
     onUnmounted(unsubscribe)
   })

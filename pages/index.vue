@@ -4,7 +4,7 @@
       <ArrowPathIcon class="animate-spin h-16 w-16 text-violet-500" />
     </div>
     <div v-else-if="!currentUser">
-      <p>Promote the product here!</p>
+      <LandingPage />
     </div>
     <div v-else>
       <div
@@ -45,8 +45,9 @@ import { redirectToConnectTrello } from "~/helpers/redirectToConnectTrello"
 import { redirectToStripeCheckout } from "~/helpers/redirectToStripeCheckout"
 import { redirectToStripePortal } from "~/helpers/redirectToStripePortal"
 import { ArrowPathIcon } from "@heroicons/vue/24/solid"
+import LandingPage from "~/components/LandingPage.vue"
 
-const { isUserSignedIn, currentUser, isAuthLoading } = useCurrentUser()
+const { currentUser, isAuthLoading } = useCurrentUser()
 
 definePageMeta({
   title: "Home",

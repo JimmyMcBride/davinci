@@ -5,7 +5,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "stripe:listen": "stripe listen --forward-to http://localhost:3000/api/stripe/webhook"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.4.1",
